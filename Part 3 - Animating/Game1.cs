@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Part_3___Animating
 {
@@ -8,7 +9,9 @@ namespace Part_3___Animating
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        Texture2D tribbleGreyTexture, tribbleCreamTexture, tribbleBrownTexture, closetTexture;
+        Rectangle tribbleGreyRect, tribbleCreamRect, tribbleBrownRect, BackroundRect;
+        Vector2 tribbleGreySpeed, tribbleCreamSpeed, tribbleBrownSpeed;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -18,8 +21,24 @@ namespace Part_3___Animating
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic heree
+            // TODO: Add your initialization logic here
+            Random rand = new Random();
+            int randomX = rand.Next(0, 800);
 
+            _graphics.PreferredBackBufferWidth = 800; // Sets the width of the window
+            _graphics.PreferredBackBufferHeight = 600; // Sets the height of the window
+            _graphics.ApplyChanges(); // Applies the new dimensions
+
+            BackroundRect = new Rectangle(0, 0, 800, 600);
+
+            tribbleGreyRect = new Rectangle(300, 10, 120, 120);
+            tribbleGreySpeed = new Vector2(2, 3);
+
+            tribbleCreamRect = new Rectangle(400, 300, 100, 100);
+            tribbleCreamSpeed = new Vector2(0, 2);
+
+            tribbleBrownRect = new Rectangle(0, 100, 80, 80);
+            tribbleBrownSpeed = new Vector2(3, 0);
             base.Initialize();
         }
 
@@ -28,6 +47,10 @@ namespace Part_3___Animating
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            tribbleGreyTexture = Content.Load<Texture2D>("tribbleGrey");
+            tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
+            tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
+            closetTexture = Content.Load<Texture2D>("closet Backround");
         }
 
         protected override void Update(GameTime gameTime)
@@ -36,6 +59,29 @@ namespace Part_3___Animating
                 Exit();
 
             // TODO: Add your update logic here
+            tribbleGreyRect.X += (int)tribbleGreySpeed.X;
+            tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
+
+            tribbleCreamRect.X += (int)tribbleCreamSpeed.X;
+            tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
+
+            tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
+            tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
+
+            if (tribbleGreyRect.X > 700  || tribbleGreyRect.X < 0)           
+                tribbleGreySpeed.X *= -1;
+            if (tribbleGreyRect.Y > 500 || tribbleGreyRect.Y < 0)
+                tribbleGreySpeed.Y *= -1;
+
+            if (tribbleCreamRect.X > 700 || tribbleCreamRect.X < 0)
+                tribbleCreamSpeed.X *= -1;
+            if (tribbleCreamRect.Y > 500 || tribbleCreamRect.Y < 0)
+                tribbleCreamSpeed.Y *= -1;
+
+            if (tribbleBrownRect.X > 700 || tribbleBrownRect.X < 0)
+                tribbleBrownSpeed.X *= -1;
+            if (tribbleBrownRect.Y > 500 || tribbleBrownRect.Y < 0)
+                tribbleBrownSpeed.Y *= -1;
 
             base.Update(gameTime);
         }
@@ -45,7 +91,12 @@ namespace Part_3___Animating
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(closetTexture, BackroundRect, Color.White);
+            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
+            _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);
+            _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
