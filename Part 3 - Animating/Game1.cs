@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Part_3___Animating
 {
@@ -10,8 +11,8 @@ namespace Part_3___Animating
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D tribbleGreyTexture, tribbleCreamTexture, tribbleBrownTexture, closetTexture;
-        Rectangle tribbleGreyRect, tribbleCreamRect, tribbleBrownRect, BackroundRect;
-        Vector2 tribbleGreySpeed, tribbleCreamSpeed, tribbleBrownSpeed;
+        Rectangle tribbleGreyRect, tribbleCreamRect, tribbleBrownRect, BackroundRect ;
+        Vector2 tribbleGreySpeed, tribbleCreamSpeed, tribbleBrownSpeed, gravity;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -23,7 +24,7 @@ namespace Part_3___Animating
         {
             // TODO: Add your initialization logic here
             Random rand = new Random();
-            int randomX = rand.Next(0, 800);
+            int randomX = rand.Next(0, 600);
 
             _graphics.PreferredBackBufferWidth = 800; // Sets the width of the window
             _graphics.PreferredBackBufferHeight = 600; // Sets the height of the window
@@ -31,14 +32,19 @@ namespace Part_3___Animating
 
             BackroundRect = new Rectangle(0, 0, 800, 600);
 
-            tribbleGreyRect = new Rectangle(300, 10, 120, 120);
-            tribbleGreySpeed = new Vector2(2, 3);
+            tribbleGreyRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 400), 120, 120);
+            tribbleGreySpeed = new Vector2(2, 1);
 
-            tribbleCreamRect = new Rectangle(400, 300, 100, 100);
-            tribbleCreamSpeed = new Vector2(0, 2);
+            tribbleCreamRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 400), 100, 100);
+            tribbleCreamSpeed = new Vector2(-3, 1);
 
-            tribbleBrownRect = new Rectangle(0, 100, 80, 80);
-            tribbleBrownSpeed = new Vector2(3, 0);
+            tribbleBrownRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 400), 80, 80);
+            tribbleBrownSpeed = new Vector2(3, 1);
+
+            gravity = new Vector2(0, 1);
+
+
+
             base.Initialize();
         }
 
@@ -51,6 +57,7 @@ namespace Part_3___Animating
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
             closetTexture = Content.Load<Texture2D>("closet Backround");
+           
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,6 +66,11 @@ namespace Part_3___Animating
                 Exit();
 
             // TODO: Add your update logic here
+
+            tribbleGreySpeed.Y += (int)gravity.Y;
+            tribbleCreamSpeed.Y += (int)gravity.Y;
+            tribbleBrownSpeed.Y += (int)gravity.Y;
+
             tribbleGreyRect.X += (int)tribbleGreySpeed.X;
             tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
 
@@ -68,20 +80,37 @@ namespace Part_3___Animating
             tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
             tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
 
-            if (tribbleGreyRect.X > 700  || tribbleGreyRect.X < 0)           
+
+            if (tribbleGreyRect.X > 700  || tribbleGreyRect.X <= 0)
                 tribbleGreySpeed.X *= -1;
-            if (tribbleGreyRect.Y > 500 || tribbleGreyRect.Y < 0)
+
+            if (tribbleGreyRect.Y > 480 || tribbleGreyRect.Y <= 0)
+            {
                 tribbleGreySpeed.Y *= -1;
+                tribbleGreyRect.Y = 480;
+            }
+                
 
-            if (tribbleCreamRect.X > 700 || tribbleCreamRect.X < 0)
+
+            if (tribbleCreamRect.X > 700 || tribbleCreamRect.X <= 0)
                 tribbleCreamSpeed.X *= -1;
-            if (tribbleCreamRect.Y > 500 || tribbleCreamRect.Y < 0)
+            if (tribbleCreamRect.Y > 500 || tribbleCreamRect.Y <= 0)
+            {
                 tribbleCreamSpeed.Y *= -1;
+                tribbleCreamRect.Y = 500;
+            }
+                
 
-            if (tribbleBrownRect.X > 700 || tribbleBrownRect.X < 0)
+            if (tribbleBrownRect.X > 700 || tribbleBrownRect.X <= 0)
                 tribbleBrownSpeed.X *= -1;
-            if (tribbleBrownRect.Y > 500 || tribbleBrownRect.Y < 0)
+            if (tribbleBrownRect.Y > 520 || tribbleBrownRect.Y <= 0)
+            {
                 tribbleBrownSpeed.Y *= -1;
+                tribbleBrownRect.Y = 520;
+            }
+                
+
+
 
             base.Update(gameTime);
         }
