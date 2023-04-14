@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -13,6 +14,7 @@ namespace Part_3___Animating
         Texture2D tribbleGreyTexture, tribbleCreamTexture, tribbleBrownTexture, closetTexture;
         Rectangle tribbleGreyRect, tribbleCreamRect, tribbleBrownRect, BackroundRect ;
         Vector2 tribbleGreySpeed, tribbleCreamSpeed, tribbleBrownSpeed, gravity;
+        SoundEffect tribbleSound;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -32,13 +34,13 @@ namespace Part_3___Animating
 
             BackroundRect = new Rectangle(0, 0, 800, 600);
 
-            tribbleGreyRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 400), 120, 120);
+            tribbleGreyRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 300), 120, 120);
             tribbleGreySpeed = new Vector2(2, 1);
 
-            tribbleCreamRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 400), 100, 100);
+            tribbleCreamRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 300), 100, 100);
             tribbleCreamSpeed = new Vector2(-3, 1);
 
-            tribbleBrownRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 400), 80, 80);
+            tribbleBrownRect = new Rectangle(rand.Next(0, 600), rand.Next(0, 300), 80, 80);
             tribbleBrownSpeed = new Vector2(3, 1);
 
             gravity = new Vector2(0, 1);
@@ -57,7 +59,8 @@ namespace Part_3___Animating
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
             closetTexture = Content.Load<Texture2D>("closet Backround");
-           
+            tribbleSound = Content.Load<SoundEffect>("tribble_sound");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -83,11 +86,13 @@ namespace Part_3___Animating
 
             if (tribbleGreyRect.X > 700  || tribbleGreyRect.X <= 0)
                 tribbleGreySpeed.X *= -1;
+            
 
             if (tribbleGreyRect.Y > 480 || tribbleGreyRect.Y <= 0)
             {
                 tribbleGreySpeed.Y *= -1;
                 tribbleGreyRect.Y = 480;
+                tribbleSound.Play();
             }
                 
 
@@ -98,6 +103,7 @@ namespace Part_3___Animating
             {
                 tribbleCreamSpeed.Y *= -1;
                 tribbleCreamRect.Y = 500;
+                tribbleSound.Play();
             }
                 
 
@@ -107,6 +113,7 @@ namespace Part_3___Animating
             {
                 tribbleBrownSpeed.Y *= -1;
                 tribbleBrownRect.Y = 520;
+                tribbleSound.Play();
             }
                 
 
